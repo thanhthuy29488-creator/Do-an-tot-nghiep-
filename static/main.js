@@ -177,6 +177,9 @@ async function analyzeCamera() {
                 emotionCount[emotion]++;
                 updateEmotionStatistics();
             }
+        } else if(data.status === "no_face") {
+            aiStatus.innerHTML = '<i class="fa-solid fa-user-slash"></i> Không thấy khuôn mặt';
+            aiStatus.style.color = "var(--warning)";
         }
     } catch(error) {
         console.error("AI ERROR:", error);
@@ -328,4 +331,43 @@ function initCharts() {
 }
 
 // Khởi tạo biểu đồ khi trang load
-document.addEventListener('DOMContentLoaded', initCharts);
+document.addEventListener('DOMContentLoaded', function() {
+    initCharts();
+
+    // ===============================
+    // TABS LOGIC
+    // ===============================
+    const menuItems = document.querySelectorAll('.menu-item');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+
+    menuItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Bỏ active tất cả menu
+            menuItems.forEach(btn => btn.classList.remove('active'));
+            // Thêm active cho menu hiện tại
+            this.classList.add('active');
+
+            // Ẩn tất cả tab
+            tabPanes.forEach(pane => {
+                pane.style.display = 'none';
+                pane.classList.remove('active');
+            });
+
+            // Hiện tab mục tiêu
+            const targetId = this.getAttribute('data-target');
+            if (targetId) {
+                const targetPane = document.getElementById(targetId);
+                if (targetPane) {
+                    if (targetId === 'tab-dashboard') {
+                        targetPane.style.display = 'flex'; // Grid layout đặc biệt cho dashboard
+                    } else {
+                        targetPane.style.display = 'block';
+                    }
+                    targetPane.classList.add('active');
+                }
+            }
+        });
+    });
+});

@@ -25,15 +25,15 @@
             </div>
             
             <nav class="sidebar-menu">
-                <a href="#" class="menu-item active"><i class="fa-solid fa-home"></i> Dashboard</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-video"></i> Giám sát trực tiếp</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-file-video"></i> Phân tích Offline</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-chart-pie"></i> Thống kê</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> Biểu đồ cảm xúc</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử phân tích</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-file-lines"></i> Báo cáo</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-gear"></i> Cấu hình</a>
-                <a href="#" class="menu-item"><i class="fa-regular fa-circle-question"></i> Hướng dẫn</a>
+                <a href="#" class="menu-item active" data-target="tab-dashboard"><i class="fa-solid fa-home"></i> Dashboard</a>
+                <a href="#" class="menu-item" data-target="tab-realtime"><i class="fa-solid fa-video"></i> Giám sát trực tiếp</a>
+                <a href="#" class="menu-item" data-target="tab-offline"><i class="fa-solid fa-file-video"></i> Phân tích Offline</a>
+                <a href="#" class="menu-item" data-target="tab-stats"><i class="fa-solid fa-chart-pie"></i> Thống kê</a>
+                <a href="#" class="menu-item" data-target="tab-chart"><i class="fa-solid fa-chart-line"></i> Biểu đồ cảm xúc</a>
+                <a href="#" class="menu-item" data-target="tab-history"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử phân tích</a>
+                <a href="#" class="menu-item" data-target="tab-report"><i class="fa-solid fa-file-lines"></i> Báo cáo</a>
+                <a href="#" class="menu-item" data-target="tab-config"><i class="fa-solid fa-gear"></i> Cấu hình</a>
+                <a href="#" class="menu-item" data-target="tab-guide"><i class="fa-regular fa-circle-question"></i> Hướng dẫn</a>
             </nav>
 
             <div class="sidebar-session">
@@ -72,64 +72,109 @@
 
             <!-- Dashboard Content -->
             <div class="dashboard-content">
-                <div class="dashboard-grid">
-                    <!-- Left Column -->
-                    <div class="grid-col-left">
-                        <div class="widget">
-                            <div class="widget-header"><i class="fa-solid fa-video"></i> Giám sát trực tiếp (Real-time Monitoring)</div>
-                            <div class="widget-body">
-                                {% include 'components/camera_realtime.html' %}
+                
+                <!-- TAB: DASHBOARD -->
+                <div id="tab-dashboard" class="tab-pane active" style="display: flex; flex-direction: column; gap: 20px; height: 100%;">
+                    <div class="dashboard-grid">
+                        <!-- Left Column -->
+                        <div class="grid-col-left">
+                            <div class="widget">
+                                <div class="widget-header"><i class="fa-solid fa-video"></i> Giám sát trực tiếp (Real-time Monitoring)</div>
+                                <div class="widget-body">
+                                    {% include 'components/camera_realtime.html' %}
+                                </div>
+                            </div>
+                            <div class="widget">
+                                <div class="widget-header"><i class="fa-solid fa-chart-pie"></i> Phân bố cảm xúc (Real-time)</div>
+                                <div class="widget-body">
+                                    {% include 'components/emotion_stats.html' %}
+                                </div>
                             </div>
                         </div>
-                        <div class="widget">
-                            <div class="widget-header"><i class="fa-solid fa-chart-pie"></i> Phân bố cảm xúc (Real-time)</div>
-                            <div class="widget-body">
-                                {% include 'components/emotion_stats.html' %}
+                        
+                        <!-- Right Column -->
+                        <div class="grid-col-right">
+                            <div class="widget widget-ai">
+                                <div class="widget-header"><i class="fa-solid fa-brain"></i> Kết quả phân tích AI (Real-time)</div>
+                                <div class="widget-body">
+                                    {% include 'components/ai_results.html' %}
+                                </div>
+                            </div>
+                            <div class="widget widget-chart">
+                                <div class="widget-header"><i class="fa-solid fa-chart-line"></i> Chỉ số tập trung tổng thể</div>
+                                <div class="widget-body">
+                                    {% include 'components/emotion_chart.html' %}
+                                </div>
+                            </div>
+                            <div class="widget widget-history">
+                                <div class="widget-header"><i class="fa-solid fa-list"></i> Lịch sử phân tích (Real-time)</div>
+                                <div class="widget-body">
+                                    {% include 'components/history_table.html' %}
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Right Column -->
-                    <div class="grid-col-right">
-                        <div class="widget widget-ai">
-                            <div class="widget-header"><i class="fa-solid fa-brain"></i> Kết quả phân tích AI (Real-time)</div>
-                            <div class="widget-body">
-                                {% include 'components/ai_results.html' %}
-                            </div>
+                    <!-- Footer Summary Banner -->
+                    <div class="summary-banner">
+                        <div class="banner-title">Báo cáo nhanh phiên học</div>
+                        <div class="banner-stats">
+                            <div class="stat-badge"><i class="fa-regular fa-clock"></i> <span>Thời gian theo dõi<br><b id="session-time">00:00:00</b></span></div>
+                            <div class="stat-badge error"><i class="fa-solid fa-bullseye"></i> <span>Mức độ tập trung TB<br><b>89%</b></span></div>
+                            <div class="stat-badge success"><i class="fa-regular fa-face-smile"></i> <span>Cảm xúc tích cực<br><b>75.79%</b></span></div>
+                            <div class="stat-badge warning"><i class="fa-solid fa-triangle-exclamation"></i> <span>Số lần mất tập trung<br><b>7 lần</b></span></div>
                         </div>
-                        <div class="widget widget-chart">
-                            <div class="widget-header"><i class="fa-solid fa-chart-line"></i> Chỉ số tập trung tổng thể</div>
-                            <div class="widget-body">
-                                {% include 'components/emotion_chart.html' %}
-                            </div>
-                        </div>
-                        <div class="widget widget-history">
-                            <div class="widget-header"><i class="fa-solid fa-list"></i> Lịch sử phân tích (Real-time)</div>
-                            <div class="widget-body">
-                                {% include 'components/history_table.html' %}
-                            </div>
+                        <div class="banner-actions">
+                            <button class="btn-export"><i class="fa-solid fa-file-export"></i> Xuất Báo Cáo</button>
                         </div>
                     </div>
+                </div>
+
+                <!-- TAB: PHÂN TÍCH OFFLINE -->
+                <div id="tab-offline" class="tab-pane" style="display: none;">
+                    <div class="widget">
+                        <div class="widget-header"><i class="fa-solid fa-file-video"></i> Phân tích Video Offline</div>
+                        <div class="widget-body">
+                            {% include 'components/video_analysis.html' %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: HƯỚNG DẪN -->
+                <div id="tab-guide" class="tab-pane" style="display: none;">
+                    <div class="widget">
+                        <div class="widget-header"><i class="fa-regular fa-circle-question"></i> Hướng dẫn & Tính năng</div>
+                        <div class="widget-body">
+                            {% include 'components/features_info.html' %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: CÁC TAB KHÁC -->
+                <div id="tab-realtime" class="tab-pane" style="display: none;">
+                    <h3 style="color: var(--text-muted); text-align: center; margin-top: 50px;">Tính năng này đang được gộp hiển thị trên màn hình Dashboard chính.</h3>
+                </div>
+                <div id="tab-stats" class="tab-pane" style="display: none;">
+                    <h3 style="color: var(--text-muted); text-align: center; margin-top: 50px;">Tính năng Thống kê đang được gộp hiển thị trên màn hình Dashboard chính.</h3>
+                </div>
+                <div id="tab-chart" class="tab-pane" style="display: none;">
+                    <h3 style="color: var(--text-muted); text-align: center; margin-top: 50px;">Biểu đồ cảm xúc đang được hiển thị trên màn hình Dashboard chính.</h3>
+                </div>
+                <div id="tab-history" class="tab-pane" style="display: none;">
+                    <h3 style="color: var(--text-muted); text-align: center; margin-top: 50px;">Lịch sử phân tích đang được hiển thị trên màn hình Dashboard chính.</h3>
+                </div>
+                <div id="tab-report" class="tab-pane" style="display: none;">
+                    <h3 style="color: var(--text-muted); text-align: center; margin-top: 50px;">Tính năng lập báo cáo đang được phát triển...</h3>
+                </div>
+                <div id="tab-config" class="tab-pane" style="display: none;">
+                    <h3 style="color: var(--text-muted); text-align: center; margin-top: 50px;">Cấu hình hệ thống đang được phát triển...</h3>
                 </div>
                 
-                <!-- Footer Summary Banner -->
-                <div class="summary-banner">
-                    <div class="banner-title">Báo cáo nhanh phiên học</div>
-                    <div class="banner-stats">
-                        <div class="stat-badge"><i class="fa-regular fa-clock"></i> <span>Thời gian theo dõi<br><b id="session-time">00:00:00</b></span></div>
-                        <div class="stat-badge error"><i class="fa-solid fa-bullseye"></i> <span>Mức độ tập trung TB<br><b>89%</b></span></div>
-                        <div class="stat-badge success"><i class="fa-regular fa-face-smile"></i> <span>Cảm xúc tích cực<br><b>75.79%</b></span></div>
-                        <div class="stat-badge warning"><i class="fa-solid fa-triangle-exclamation"></i> <span>Số lần mất tập trung<br><b>7 lần</b></span></div>
-                    </div>
-                    <div class="banner-actions">
-                        <button class="btn-export"><i class="fa-solid fa-file-export"></i> Xuất Báo Cáo</button>
-                    </div>
-                </div>
             </div>
         </main>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <script src="{{ url_for('static', filename='main.js') }}?v=3"></script>
 </body>
 </html>
