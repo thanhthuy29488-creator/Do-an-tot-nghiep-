@@ -1,0 +1,47 @@
+<!-- ================= CAMERA ================= -->
+
+    <section class="card" style="text-align: center;">
+
+        <h2>📷 Đánh giá thời gian thực (Real-time Monitoring)</h2>
+
+        <video id="video"
+               autoplay
+               playsinline
+               style="max-width: 100%; border-radius: 12px; margin: 0 auto; display: block;">
+        </video>
+        <canvas id="canvas" style="display:none; margin: 0 auto;"></canvas>
+
+
+        <div class="status" style="margin-top: 15px;">
+
+            <p id="camera-status">
+
+                ⚪ Camera chưa bật
+
+            </p>
+
+            <p id="ai-status">
+
+                🤖 AI chưa phân tích
+
+            </p>
+
+        </div>
+
+        <div class="button-group" style="justify-content: center;">
+
+            <button id="startBtn">
+
+                ▶ Bắt đầu Camera
+
+            </button>
+
+            <button id="stopBtn">
+
+                ⛔ Dừng Camera
+
+            </button>
+
+        </div>
+
+    </section>

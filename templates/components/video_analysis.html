@@ -1,0 +1,77 @@
+<!-- ================= PHÂN TÍCH VIDEO ================= -->
+
+<section class="card">
+
+    <h2>🎬 Phân tích Video lưu trữ (Offline Analysis)</h2>
+
+    <p class="description">
+
+        Tải video bài giảng lên để AI phân tích cảm xúc và đánh giá
+        mức độ tập trung trong toàn bộ thời lượng video.
+
+    </p>
+
+    <input
+        type="file"
+        id="video-upload"
+        accept="video/*">
+
+    <div class="button-group">
+
+        <button id="uploadBtn">
+
+            📂 Phân tích Video
+
+        </button>
+
+    </div>
+
+    <div id="upload-status">
+
+        Chưa có video được tải lên.
+
+    </div>
+
+    <hr>
+
+    <h3>💾 Quản lý dữ liệu</h3>
+
+    <div class="button-group">
+
+        <button id="exportBtn">
+
+            📊 Xuất Excel
+
+        </button>
+
+        <button id="resetBtn">
+
+            🔄 Đặt lại thống kê
+
+        </button>
+
+        <button id="summaryBtn">
+
+            📈 Tổng quan
+
+        </button>
+
+    </div>
+
+    <div class="summary-box">
+
+        <p>
+
+            Tổng số lần AI phân tích:
+
+            <strong id="total-detect">
+
+                0
+
+            </strong>
+
+        </p>
+
+    </div>
+
+</section>

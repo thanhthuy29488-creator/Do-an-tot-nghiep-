@@ -1,0 +1,630 @@
+/* =====================================================
+   AI EMOTION RECOGNITION SYSTEM
+   styles.css
+===================================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+
+    background:linear-gradient(135deg,#eef5ff,#d9ecff);
+
+    color:#333;
+
+}
+
+/* ================= HEADER ================= */
+
+.header{
+
+    text-align:center;
+
+    padding:35px;
+
+    color:white;
+
+    background:linear-gradient(135deg,#1565C0,#42A5F5);
+
+    box-shadow:0 5px 20px rgba(0,0,0,.2);
+
+}
+
+.header h1{
+
+    font-size:38px;
+
+    margin-bottom:10px;
+
+}
+
+.header h2{
+
+    font-size:28px;
+
+    margin-bottom:15px;
+
+}
+
+.header p{
+
+    font-size:18px;
+
+    opacity:.95;
+
+}
+
+/* ================= CONTAINER ================= */
+
+.container{
+
+    width:95%;
+
+    max-width:1400px;
+
+    margin:30px auto;
+
+}
+
+/* ================= CARD ================= */
+
+.card{
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    margin-bottom:25px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+
+    transition:.3s;
+
+}
+
+.card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.card h2{
+
+    color:#1565C0;
+
+    margin-bottom:20px;
+
+}
+
+/* ================= BUTTON ================= */
+
+.button-group{
+
+    margin-top:20px;
+
+    display:flex;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+
+}
+
+button{
+
+    background:#1565C0;
+
+    color:white;
+
+    border:none;
+
+    border-radius:8px;
+
+    padding:12px 22px;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+button:hover{
+
+    background:#0D47A1;
+
+    transform:scale(1.05);
+
+}
+/* =====================================================
+   KẾT QUẢ PHÂN TÍCH AI
+===================================================== */
+
+.result-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
+
+.result-item{
+    background:#f8fbff;
+    border-radius:12px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.result-item:hover{
+    transform:translateY(-5px);
+}
+
+.result-item h3{
+    color:#34495e;
+    margin-bottom:15px;
+}
+
+.result-value{
+    font-size:26px;
+    font-weight:bold;
+    color:#0077ff;
+}
+
+/* =====================================================
+   THANH MỨC ĐỘ TẬP TRUNG
+===================================================== */
+
+.progress-box{
+    margin-top:30px;
+}
+
+.progress{
+    width:100%;
+    height:28px;
+    background:#ddd;
+    border-radius:50px;
+    overflow:hidden;
+    margin-top:10px;
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,#00c853,#64dd17);
+    transition:.6s;
+}
+
+.progress-text{
+    text-align:center;
+    margin-top:12px;
+    font-size:22px;
+    font-weight:bold;
+    color:#2c3e50;
+}
+
+/* =====================================================
+   THỐNG KÊ CẢM XÚC
+===================================================== */
+
+.emotion-stat{
+    margin-top:20px;
+}
+
+.emotion-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#f5f7fa;
+    padding:12px 18px;
+    margin-bottom:10px;
+    border-radius:10px;
+    transition:.3s;
+}
+
+.emotion-row:hover{
+    background:#e3f2fd;
+    transform:translateX(5px);
+}
+
+.emotion-row span:first-child{
+    font-weight:600;
+}
+
+.emotion-row span:last-child{
+    font-size:18px;
+    font-weight:bold;
+    color:#0d6efd;
+}
+
+/* =====================================================
+   DANH SÁCH CẢM XÚC
+===================================================== */
+
+.emotion-list{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+    gap:15px;
+    margin-top:25px;
+}
+
+.emotion{
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    text-align:center;
+    font-size:18px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+    transition:.3s;
+    cursor:pointer;
+}
+
+.emotion:hover{
+    background:#0077ff;
+    color:white;
+    transform:scale(1.05);
+}
+/* =====================================================
+   UPLOAD VIDEO
+===================================================== */
+
+.upload-area{
+
+    margin-top:20px;
+
+    padding:35px;
+
+    border:2px dashed #2196f3;
+
+    border-radius:15px;
+
+    text-align:center;
+
+    background:#f8fbff;
+
+    transition:.3s;
+
+}
+
+.upload-area:hover{
+
+    background:#eef7ff;
+
+    border-color:#0d6efd;
+
+}
+
+.upload-area p{
+
+    font-size:18px;
+
+    color:#555;
+
+    margin-bottom:20px;
+
+}
+
+#video-upload{
+
+    width:100%;
+
+    padding:12px;
+
+    border:1px solid #ccc;
+
+    border-radius:10px;
+
+    background:white;
+
+    cursor:pointer;
+
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer{
+
+    margin-top:40px;
+
+    padding:20px;
+
+    text-align:center;
+
+    color:white;
+
+    background:#1f2937;
+
+    font-size:15px;
+
+}
+
+/* =====================================================
+   HIỆU ỨNG CARD
+===================================================== */
+
+.card{
+
+    animation:fadeUp .8s ease;
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(25px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* =====================================================
+   ANTIGRAVITY BACKGROUND
+===================================================== */
+
+body{
+
+    background:linear-gradient(-45deg,
+        #eef6ff,
+        #ffffff,
+        #e8f5ff,
+        #f7fbff);
+
+    background-size:400% 400%;
+
+    animation:bgMove 12s ease infinite;
+
+}
+
+@keyframes bgMove{
+
+    0%{
+
+        background-position:0% 50%;
+
+    }
+
+    50%{
+
+        background-position:100% 50%;
+
+    }
+
+    100%{
+
+        background-position:0% 50%;
+
+    }
+
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:992px){
+
+    .container{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .header h1{
+
+        font-size:32px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .button-group{
+
+        flex-direction:column;
+
+    }
+
+    .button-group button{
+
+        width:100%;
+
+    }
+
+    .emotion-list{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:480px){
+
+    .header h1{
+
+        font-size:26px;
+
+    }
+
+    .result-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .emotion-list{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .card{
+
+        padding:20px;
+
+    }
+
+}
+/* ===============================
+   CLOCK - THỜI GIAN HỆ THỐNG
+================================ */
+
+.time-box{
+
+    margin:25px auto;
+
+    width:320px;
+
+    text-align:center;
+
+    padding:20px;
+
+    border-radius:15px;
+
+}
+
+
+#clock{
+
+    font-size:50px;
+
+    font-weight:700;
+
+    letter-spacing:2px;
+
+}
+
+
+#date{
+
+    font-size:26px;
+
+    margin-top:12px;
+
+    font-weight:600;
+
+}
+/* ===============================
+   SYSTEM STATUS
+================================ */
+
+
+.system-status{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:20px;
+
+    margin-top:20px;
+
+    flex-wrap:wrap;
+
+}
+
+
+
+.status-item{
+
+    padding:12px 20px;
+
+    border-radius:12px;
+
+    background:#f2f2f2;
+
+    font-size:18px;
+
+    font-weight:600;
+
+}
+
+
+.status-item span{
+
+    color:green;
+
+}
+/* ===============================
+   EMOTION CHART
+================================ */
+
+
+#emotionChart{
+
+    max-width:700px;
+
+    max-height:350px;
+
+    margin:auto;
+
+}
+
+/* ===============================
+   TABS UI
+================================ */
+
+.tabs-container {
+    margin-top: 30px;
+}
+
+.tab-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    background: #e3f2fd;
+    color: #1565C0;
+    border: 2px solid transparent;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.tab-btn:hover {
+    background: #bbdefb;
+    transform: translateY(-2px);
+}
+
+.tab-btn.active {
+    background: #1565C0;
+    color: white;
+    box-shadow: 0 4px 15px rgba(21, 101, 192, 0.4);
+}
+
+.tab-pane {
+    display: none;
+    animation: fadeUp 0.5s ease;
+}
+
+.tab-pane.active {
+    display: block;
+}

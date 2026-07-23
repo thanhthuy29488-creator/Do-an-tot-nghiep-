@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Emotion Recognition System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/styles.css') }}">
+
+</head>
+
+<body>
+
+{% include 'components/header.html' %}
+{% include 'components/system_status.html' %}
+
+<!-- ================= CONTAINER ================= -->
+
+<div class="container">
+
+    {% include 'components/camera_realtime.html' %}
+    
+    {% include 'components/ai_results.html' %}
+    
+    <div class="tabs-container">
+        <div class="tab-buttons">
+            <button class="tab-btn active" data-target="tab-stats">Thống kê</button>
+            <button class="tab-btn" data-target="tab-chart">Biểu đồ</button>
+            <button class="tab-btn" data-target="tab-video">Video Offline</button>
+            <button class="tab-btn" data-target="tab-features">Chức năng</button>
+            <button class="tab-btn" data-target="tab-history">Lịch sử</button>
+            <button class="tab-btn" data-target="tab-export">Dữ liệu</button>
+        </div>
+
+        <div class="tab-contents">
+            <div id="tab-stats" class="tab-pane active">
+                {% include 'components/emotion_stats.html' %}
+            </div>
+            <div id="tab-chart" class="tab-pane">
+                {% include 'components/emotion_chart.html' %}
+            </div>
+            <div id="tab-video" class="tab-pane">
+                {% include 'components/video_analysis.html' %}
+            </div>
+            <div id="tab-features" class="tab-pane">
+                {% include 'components/features_info.html' %}
+            </div>
+            <div id="tab-history" class="tab-pane">
+                {% include 'components/history_table.html' %}
+            </div>
+            <div id="tab-export" class="tab-pane">
+                {% include 'components/export_data.html' %}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% include 'components/footer.html' %}
+
+<!-- ================= JAVASCRIPT ================= -->
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+
+</body>
+
+</html>
