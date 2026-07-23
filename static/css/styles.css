@@ -587,13 +587,16 @@ body{
 
 .tabs-container {
     margin-top: 30px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
 }
 
 .tab-buttons {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 220px;
     margin-bottom: 20px;
 }
 
@@ -601,23 +604,30 @@ body{
     background: #e3f2fd;
     color: #1565C0;
     border: 2px solid transparent;
-    padding: 12px 20px;
-    border-radius: 30px;
+    padding: 15px 20px;
+    border-radius: 12px;
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
+    text-align: left;
+    width: 100%;
 }
 
 .tab-btn:hover {
     background: #bbdefb;
-    transform: translateY(-2px);
+    transform: translateX(5px);
 }
 
 .tab-btn.active {
     background: #1565C0;
     color: white;
     box-shadow: 0 4px 15px rgba(21, 101, 192, 0.4);
+}
+
+.tab-contents {
+    flex: 1;
+    min-width: 0;
 }
 
 .tab-pane {
@@ -627,4 +637,25 @@ body{
 
 .tab-pane.active {
     display: block;
+}
+
+/* Tab Responsive */
+@media (max-width: 768px) {
+    .tabs-container {
+        flex-direction: column;
+    }
+    .tab-buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+        min-width: auto;
+    }
+    .tab-btn {
+        width: auto;
+        text-align: center;
+        border-radius: 30px;
+        padding: 12px 20px;
+    }
+    .tab-btn:hover {
+        transform: translateY(-2px);
+    }
 }
