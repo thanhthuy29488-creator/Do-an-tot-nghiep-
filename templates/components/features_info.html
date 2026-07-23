@@ -1,110 +1,96 @@
-<!-- ================= CHỨC NĂNG HỆ THỐNG ================= -->
+<style>
+    .guide-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 10px;
+    }
 
-<section class="card">
+    .guide-item {
+        background: var(--bg-main);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 20px;
+        transition: all 0.2s ease;
+    }
 
-    <h2>📌 Chức năng hệ thống</h2>
+    .guide-item:hover {
+        transform: translateY(-3px);
+        border-color: var(--accent-blue);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
 
+    .guide-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
 
-    <div class="feature-grid">
+    .guide-item h3 {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--text-main);
+        margin-bottom: 8px;
+        letter-spacing: 0.2px;
+    }
 
+    .guide-item p {
+        font-size: 13px;
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+</style>
 
-        <div class="feature-item">
-
-            <h3>📹 Giám sát thời gian thực</h3>
-
-            <p>
-
-                Kết nối camera trực tiếp,
-                AI nhận diện khuôn mặt,
-                phân tích cảm xúc và đánh giá
-                mức độ tập trung của người học.
-
-            </p>
-
-        </div>
-
-
-
-        <div class="feature-item">
-
-            <h3>🧠 Nhận diện cảm xúc AI</h3>
-
-            <p>
-
-                Phân loại 7 trạng thái cảm xúc:
-                Happy, Neutral, Sad, Angry,
-                Fear, Surprise, Disgust.
-
-            </p>
-
-        </div>
-
-
-
-        <div class="feature-item">
-
-            <h3>🎞 Phân tích video bài giảng</h3>
-
-            <p>
-
-                Cho phép tải video đã ghi,
-                hệ thống phân tích từng khung hình
-                và tổng hợp kết quả cảm xúc.
-
-            </p>
-
-        </div>
-
-
-
-        <div class="feature-item">
-
-            <h3>📈 Đánh giá mức độ tập trung</h3>
-
-            <p>
-
-                Tính toán chỉ số tập trung
-                dựa trên kết quả nhận diện cảm xúc
-                và trạng thái quan sát được.
-
-            </p>
-
-        </div>
-
-
-
-        <div class="feature-item">
-
-            <h3>💾 Lưu trữ dữ liệu</h3>
-
-            <p>
-
-                Lưu kết quả phân tích,
-                lịch sử hoạt động,
-                phục vụ tra cứu và thống kê.
-
-            </p>
-
-        </div>
-
-
-
-        <div class="feature-item">
-
-            <h3>📊 Báo cáo kết quả</h3>
-
-            <p>
-
-                Tổng hợp tỷ lệ cảm xúc,
-                chỉ số tập trung và xuất báo cáo
-                phục vụ đánh giá quá trình học tập.
-
-            </p>
-
-        </div>
-
-
+<div class="guide-grid">
+    <div class="guide-item">
+        <div class="guide-icon" style="color: var(--accent-blue); background: rgba(59, 130, 246, 0.1);"><i
+                class="fa-solid fa-video"></i></div>
+        <h3>Giám sát thời gian thực</h3>
+        <p>Kết nối camera trực tiếp, AI nhận diện khuôn mặt, phân tích cảm xúc và đánh giá mức độ tập trung của người
+            học hoàn toàn tự động.</p>
     </div>
 
+    <div class="guide-item">
+        <div class="guide-icon" style="color: var(--success); background: rgba(16, 185, 129, 0.1);"><i
+                class="fa-solid fa-brain"></i></div>
+        <h3>Nhận diện cảm xúc AI</h3>
+        <p>Thuật toán học sâu phân loại chính xác 7 trạng thái: Happy, Neutral, Sad, Angry, Fear, Surprise, Disgust.</p>
+    </div>
 
-</section>
+    <div class="guide-item">
+        <div class="guide-icon" style="color: var(--warning); background: rgba(245, 158, 11, 0.1);"><i
+                class="fa-solid fa-file-video"></i></div>
+        <h3>Phân tích video bài giảng</h3>
+        <p>Cho phép tải lên các đoạn video đã ghi hình sẵn. Hệ thống sẽ trích xuất từng khung hình để phân tích giống
+            hệt với camera trực tiếp.</p>
+    </div>
+
+    <div class="guide-item">
+        <div class="guide-icon" style="color: #8B5CF6; background: rgba(139, 92, 246, 0.1);"><i
+                class="fa-solid fa-bullseye"></i></div>
+        <h3>Đánh giá mức độ tập trung</h3>
+        <p>Tính toán chỉ số tập trung (Focus Index) phức hợp dựa trên chuỗi kết quả nhận diện cảm xúc liên tiếp, giúp
+            giáo viên nắm bắt tình hình lớp học.</p>
+    </div>
+
+    <div class="guide-item">
+        <div class="guide-icon" style="color: #06B6D4; background: rgba(6, 182, 212, 0.1);"><i
+                class="fa-solid fa-database"></i></div>
+        <h3>Lưu trữ dữ liệu an toàn</h3>
+        <p>Lưu toàn bộ lịch sử phân tích, biểu đồ và kết quả chi tiết của phiên học vào hệ cơ sở dữ liệu SQLite, dễ dàng
+            tra cứu lại bất cứ lúc nào.</p>
+    </div>
+
+    <div class="guide-item">
+        <div class="guide-icon" style="color: var(--error); background: rgba(239, 68, 68, 0.1);"><i
+                class="fa-solid fa-file-export"></i></div>
+        <h3>Báo cáo kết quả</h3>
+        <p>Tổng hợp tỷ lệ cảm xúc, vẽ biểu đồ trực quan và cho phép xuất dữ liệu ra file Excel phục vụ cho việc nộp báo
+            cáo và đánh giá tổng kết.</p>
+    </div>
+</div>

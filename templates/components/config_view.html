@@ -1,0 +1,97 @@
+<style>
+.config-container {
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+.config-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+.config-group label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-main);
+}
+.form-control {
+    background-color: var(--bg-main);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+}
+.form-control:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+.form-control option {
+    background-color: var(--bg-panel);
+    color: var(--text-main);
+}
+</style>
+
+<div class="config-container">
+    <div class="widget">
+        <div class="widget-header"><i class="fa-solid fa-sliders"></i> Cài đặt hệ thống</div>
+        <div class="widget-body">
+            
+            <!-- Nguồn Camera -->
+            <div class="config-group">
+                <label><i class="fa-solid fa-video"></i> Nguồn Camera</label>
+                <select class="form-control">
+                    <option>Camera mặc định (Integrated Webcam)</option>
+                    <option>DroidCam Source</option>
+                    <option>OBS Virtual Camera</option>
+                </select>
+                <span style="font-size: 12px; color: var(--text-muted);">Chọn thiết bị ghi hình để phục vụ chức năng Giám sát trực tiếp.</span>
+            </div>
+            
+            <!-- Ngưỡng phân tích AI -->
+            <div class="config-group">
+                <label><i class="fa-solid fa-brain"></i> Ngưỡng cảnh báo mất tập trung (%)</label>
+                <input type="range" min="30" max="80" value="50" class="form-control" style="padding: 0; cursor: pointer;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); margin-top: 5px;">
+                    <span>Nhạy (30%)</span>
+                    <span>Mặc định (50%)</span>
+                    <span>Nghiêm khắc (80%)</span>
+                </div>
+            </div>
+
+            <hr style="border: none; border-top: 1px solid var(--border-color); margin: 25px 0;">
+
+            <!-- Tính năng lưu trữ -->
+            <div class="config-group" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 0;">
+                <div>
+                    <div style="font-weight: 500; font-size: 14px; color: var(--text-main);"><i class="fa-solid fa-database"></i> Tự động lưu lịch sử</div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Lưu toàn bộ kết quả phân tích AI và chỉ số tập trung vào cơ sở dữ liệu.</div>
+                </div>
+                <div>
+                    <input type="checkbox" checked style="width: 22px; height: 22px; accent-color: var(--success); cursor: pointer;">
+                </div>
+            </div>
+            
+            <div class="config-group" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-top: 20px;">
+                <div>
+                    <div style="font-weight: 500; font-size: 14px; color: var(--text-main);"><i class="fa-solid fa-bell"></i> Âm thanh cảnh báo</div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Phát âm thanh "bíp" nhỏ khi học sinh có dấu hiệu mất tập trung liên tục.</div>
+                </div>
+                <div>
+                    <input type="checkbox" style="width: 22px; height: 22px; accent-color: var(--success); cursor: pointer;">
+                </div>
+            </div>
+
+            <hr style="border: none; border-top: 1px solid var(--border-color); margin: 25px 0;">
+            
+            <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                <button class="btn-export" style="background: var(--bg-panel-hover); color: var(--text-main);">Khôi phục mặc định</button>
+                <button class="btn-export" style="background: var(--accent-blue);"><i class="fa-solid fa-floppy-disk"></i> Lưu cấu hình</button>
+            </div>
+            
+        </div>
+    </div>
+</div>
