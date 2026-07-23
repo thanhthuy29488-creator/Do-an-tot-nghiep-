@@ -1,75 +1,135 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>AI Emotion Recognition System</title>
-
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/styles.css') }}">
-
+    <title>AI Emotion Recognition</title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
-
 <body>
-
-{% include 'components/header.html' %}
-{% include 'components/system_status.html' %}
-
-<!-- ================= CONTAINER ================= -->
-
-<div class="container">
-
-    <!-- ================= CAMERA & AI ================= -->
-    {% include 'components/camera_realtime.html' %}
-    
-    {% include 'components/ai_results.html' %}
-
-    <!-- ================= TABS ================= -->
-    <div class="tabs-container">
-        <div class="tab-buttons">
-            <button class="tab-btn active" data-target="tab-stats">Thống kê</button>
-            <button class="tab-btn" data-target="tab-chart">Biểu đồ</button>
-            <button class="tab-btn" data-target="tab-video">Video Offline</button>
-            <button class="tab-btn" data-target="tab-features">Chức năng</button>
-            <button class="tab-btn" data-target="tab-history">Lịch sử</button>
-            <button class="tab-btn" data-target="tab-export">Dữ liệu</button>
-        </div>
-
-        <div class="tab-contents">
-            <div id="tab-stats" class="tab-pane active">
-                {% include 'components/emotion_stats.html' %}
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-brain logo-icon"></i>
+                <div class="logo-text">
+                    <h1>AI Emotion Recognition</h1>
+                    <p>Hệ thống nhận diện cảm xúc & đánh giá sự tập trung</p>
+                </div>
             </div>
-            <div id="tab-chart" class="tab-pane">
-                {% include 'components/emotion_chart.html' %}
+            
+            <nav class="sidebar-menu">
+                <a href="#" class="menu-item active"><i class="fa-solid fa-home"></i> Dashboard</a>
+                <a href="#" class="menu-item"><i class="fa-solid fa-video"></i> Giám sát trực tiếp</a>
+                <a href="#" class="menu-item"><i class="fa-solid fa-file-video"></i> Phân tích Offline</a>
+                <a href="#" class="menu-item"><i class="fa-solid fa-chart-pie"></i> Thống kê</a>
+                <a href="#" class="menu-item"><i class="fa-solid fa-chart-line"></i> Biểu đồ cảm xúc</a>
+                <a href="#" class="menu-item"><i class="fa-solid fa-clock-rotate-left"></i> Lịch sử phân tích</a>
+                <a href="#" class="menu-item"><i class="fa-solid fa-file-lines"></i> Báo cáo</a>
+                <a href="#" class="menu-item"><i class="fa-solid fa-gear"></i> Cấu hình</a>
+                <a href="#" class="menu-item"><i class="fa-regular fa-circle-question"></i> Hướng dẫn</a>
+            </nav>
+
+            <div class="sidebar-session">
+                <div class="session-title">Thông tin phiên học</div>
+                <div class="session-item"><i class="fa-solid fa-user-graduate"></i> <span>Học sinh<br><b>Nguyễn Văn A</b></span></div>
+                <div class="session-item"><i class="fa-solid fa-users"></i> <span>Lớp<br><b>9A1</b></span></div>
+                <div class="session-item"><i class="fa-solid fa-book"></i> <span>Môn học<br><b>Toán học</b></span></div>
             </div>
-            <div id="tab-video" class="tab-pane">
-                {% include 'components/video_analysis.html' %}
+        </aside>
+
+        <!-- Main Panel -->
+        <main class="main-panel">
+            <!-- Topbar -->
+            <header class="topbar">
+                <div class="system-status-container">
+                    {% include 'components/system_status.html' %}
+                </div>
+                
+                <div class="topbar-right">
+                    <div class="time-widget">
+                        <i class="fa-regular fa-calendar"></i>
+                        <div class="time-text">
+                            <span id="top-time">--:--:--</span>
+                            <span id="top-date">--/--/----</span>
+                        </div>
+                    </div>
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=Giao+Vien&background=1D4ED8&color=fff" alt="Avatar">
+                        <div class="user-info">
+                            <span class="user-name">Giáo viên</span>
+                            <span class="user-role">THCS Hàm Chính</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <div class="dashboard-grid">
+                    <!-- Left Column -->
+                    <div class="grid-col-left">
+                        <div class="widget">
+                            <div class="widget-header"><i class="fa-solid fa-video"></i> Giám sát trực tiếp (Real-time Monitoring)</div>
+                            <div class="widget-body">
+                                {% include 'components/camera_realtime.html' %}
+                            </div>
+                        </div>
+                        <div class="widget">
+                            <div class="widget-header"><i class="fa-solid fa-chart-pie"></i> Phân bố cảm xúc (Real-time)</div>
+                            <div class="widget-body">
+                                {% include 'components/emotion_stats.html' %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Right Column -->
+                    <div class="grid-col-right">
+                        <div class="widget widget-ai">
+                            <div class="widget-header"><i class="fa-solid fa-brain"></i> Kết quả phân tích AI (Real-time)</div>
+                            <div class="widget-body">
+                                {% include 'components/ai_results.html' %}
+                            </div>
+                        </div>
+                        <div class="widget widget-chart">
+                            <div class="widget-header"><i class="fa-solid fa-chart-line"></i> Chỉ số tập trung tổng thể</div>
+                            <div class="widget-body">
+                                {% include 'components/emotion_chart.html' %}
+                            </div>
+                        </div>
+                        <div class="widget widget-history">
+                            <div class="widget-header"><i class="fa-solid fa-list"></i> Lịch sử phân tích (Real-time)</div>
+                            <div class="widget-body">
+                                {% include 'components/history_table.html' %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Footer Summary Banner -->
+                <div class="summary-banner">
+                    <div class="banner-title">Báo cáo nhanh phiên học</div>
+                    <div class="banner-stats">
+                        <div class="stat-badge"><i class="fa-regular fa-clock"></i> <span>Thời gian theo dõi<br><b>00:32:15</b></span></div>
+                        <div class="stat-badge error"><i class="fa-solid fa-bullseye"></i> <span>Mức độ tập trung TB<br><b>89%</b></span></div>
+                        <div class="stat-badge success"><i class="fa-regular fa-face-smile"></i> <span>Cảm xúc tích cực<br><b>75.79%</b></span></div>
+                        <div class="stat-badge warning"><i class="fa-solid fa-triangle-exclamation"></i> <span>Số lần mất tập trung<br><b>7 lần</b></span></div>
+                    </div>
+                    <div class="banner-actions">
+                        <button class="btn-export"><i class="fa-solid fa-file-export"></i> Xuất Báo Cáo</button>
+                    </div>
+                </div>
             </div>
-            <div id="tab-features" class="tab-pane">
-                {% include 'components/features_info.html' %}
-            </div>
-            <div id="tab-history" class="tab-pane">
-                {% include 'components/history_table.html' %}
-            </div>
-            <div id="tab-export" class="tab-pane">
-                {% include 'components/export_data.html' %}
-            </div>
-        </div>
+        </main>
     </div>
-    
-</div>
 
-{% include 'components/footer.html' %}
-
-<!-- ================= JAVASCRIPT ================= -->
- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script src="{{ url_for('static', filename='main.js') }}"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
-
 </html>

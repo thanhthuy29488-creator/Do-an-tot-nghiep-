@@ -1,46 +1,54 @@
-<!-- ================= THỐNG KÊ CẢM XÚC ================= -->
-
-    <section class="card">
-
-        <h2>📊 Thống kê tỷ lệ cảm xúc</h2>
-
-        <div class="emotion-stat">
-
-            <div class="emotion-row">
-                <span>😀 Happy</span>
-                <span id="happy-percent">0%</span>
-            </div>
-
-            <div class="emotion-row">
-                <span>😐 Neutral</span>
-                <span id="neutral-percent">0%</span>
-            </div>
-
-            <div class="emotion-row">
-                <span>😢 Sad</span>
-                <span id="sad-percent">0%</span>
-            </div>
-
-            <div class="emotion-row">
-                <span>😡 Angry</span>
-                <span id="angry-percent">0%</span>
-            </div>
-
-            <div class="emotion-row">
-                <span>😨 Fear</span>
-                <span id="fear-percent">0%</span>
-            </div>
-
-            <div class="emotion-row">
-                <span>😮 Surprise</span>
-                <span id="surprise-percent">0%</span>
-            </div>
-
-            <div class="emotion-row">
-                <span>🤢 Disgust</span>
-                <span id="disgust-percent">0%</span>
-            </div>
-
+<div style="display: flex; gap: 20px; align-items: center;">
+    
+    <!-- Donut Chart -->
+    <div style="width: 40%; position: relative;">
+        <canvas id="donutChart"></canvas>
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+            <div style="font-size: 11px; color: var(--text-muted);">Tổng</div>
+            <div id="donut-total" style="font-size: 18px; font-weight: bold;">--</div>
         </div>
+    </div>
 
-    </section>
+    <!-- Stats Table -->
+    <div style="width: 60%;">
+        <table class="history-table" style="font-size: 12px; border: none;">
+            <thead>
+                <tr>
+                    <th style="border:none; padding-bottom: 5px;">Cảm xúc</th>
+                    <th style="border:none; padding-bottom: 5px; text-align: right;">Tỷ lệ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border:none; padding: 6px 10px;"><i class="fa-solid fa-circle" style="color:#10B981; font-size: 8px; margin-right: 5px;"></i> Happy</td>
+                    <td style="border:none; padding: 6px 10px; text-align: right;" id="happy-percent">0%</td>
+                </tr>
+                <tr>
+                    <td style="border:none; padding: 6px 10px;"><i class="fa-solid fa-circle" style="color:#3B82F6; font-size: 8px; margin-right: 5px;"></i> Neutral</td>
+                    <td style="border:none; padding: 6px 10px; text-align: right;" id="neutral-percent">0%</td>
+                </tr>
+                <tr>
+                    <td style="border:none; padding: 6px 10px;"><i class="fa-solid fa-circle" style="color:#8B5CF6; font-size: 8px; margin-right: 5px;"></i> Sad</td>
+                    <td style="border:none; padding: 6px 10px; text-align: right;" id="sad-percent">0%</td>
+                </tr>
+                <tr>
+                    <td style="border:none; padding: 6px 10px;"><i class="fa-solid fa-circle" style="color:#F59E0B; font-size: 8px; margin-right: 5px;"></i> Surprise</td>
+                    <td style="border:none; padding: 6px 10px; text-align: right;" id="surprise-percent">0%</td>
+                </tr>
+                <tr>
+                    <td style="border:none; padding: 6px 10px;"><i class="fa-solid fa-circle" style="color:#EF4444; font-size: 8px; margin-right: 5px;"></i> Angry</td>
+                    <td style="border:none; padding: 6px 10px; text-align: right;" id="angry-percent">0%</td>
+                </tr>
+                <tr>
+                    <td style="border:none; padding: 6px 10px;"><i class="fa-solid fa-circle" style="color:#06B6D4; font-size: 8px; margin-right: 5px;"></i> Fear</td>
+                    <td style="border:none; padding: 6px 10px; text-align: right;" id="fear-percent">0%</td>
+                </tr>
+                <tr>
+                    <td style="border:none; padding: 6px 10px;"><i class="fa-solid fa-circle" style="color:#6B7280; font-size: 8px; margin-right: 5px;"></i> Disgust</td>
+                    <td style="border:none; padding: 6px 10px; text-align: right;" id="disgust-percent">0%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

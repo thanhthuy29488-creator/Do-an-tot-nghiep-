@@ -1,655 +1,255 @@
 // =====================================================
 // AI EMOTION RECOGNITION SYSTEM
-// MAIN JAVASCRIPT
-// CAMERA + AI ANALYSIS
+// MAIN JAVASCRIPT - DARK THEME DASHBOARD
 // =====================================================
 
-
 console.log("MAIN.JS DA CHAY");
-
 
 // ===============================
 // LẤY PHẦN TỬ HTML
 // ===============================
-
-
 const video = document.getElementById("video");
-
 const canvas = document.getElementById("canvas");
-
-
 const startBtn = document.getElementById("startBtn");
-
 const stopBtn = document.getElementById("stopBtn");
+const cameraStatus = document.getElementById("camera-status");
+const aiStatus = document.getElementById("ai-status");
 
-
-const cameraStatus =
-    document.getElementById("camera-status");
-
-
-const aiStatus =
-    document.getElementById("ai-status");
-
-
-
-const emotionResult =
-    document.getElementById("emotion-result");
-
-
-const concentrationResult =
-    document.getElementById("concentration-result");
-
-
-const attentionResult =
-    document.getElementById("attention-result");
-
-
-const progressBar =
-    document.getElementById("progress-bar");
-
-
-const progressText =
-    document.getElementById("progress-text");
-
-
+const emotionResult = document.getElementById("emotion-result");
+const concentrationResult = document.getElementById("concentration-result");
+const attentionResult = document.getElementById("attention-result");
 
 let stream = null;
-
 let cameraRunning = false;
 
 // ===============================
 // THỐNG KÊ CẢM XÚC
 // ===============================
-
 let emotionCount = {
-
-    Happy:0,
-
-    Neutral:0,
-
-    Sad:0,
-
-    Angry:0,
-
-    Fear:0,
-
-    Surprise:0,
-
-    Disgust:0
-
+    Happy: 0,
+    Neutral: 0,
+    Sad: 0,
+    Angry: 0,
+    Fear: 0,
+    Surprise: 0,
+    Disgust: 0
 };
-
-
-// ===============================
-// KIỂM TRA ELEMENT
-// ===============================
-
-
-console.log({
-
-    video,
-    startBtn,
-    stopBtn
-
-});
-
-
-
 
 // ===============================
 // BẬT CAMERA
 // ===============================
-
-
-startBtn.addEventListener(
-    "click",
-    async function(){
-
-
-        try{
-
-
-            stream =
-            await navigator.mediaDevices.getUserMedia({
-
-                video: {
-
-                    width:640,
-
-                    height:480
-
-                },
-
-                audio:false
-
-            });
-
-
-
-            video.srcObject = stream;
-
-
-            await video.play();
-
-
-
-            cameraRunning = true;
-
-
-
-            cameraStatus.innerHTML =
-            "🟢 Camera đang hoạt động";
-
-document.getElementById(
-    "camera-connect-status"
-).innerHTML =
-"Đã kết nối";
-
-            aiStatus.innerHTML =
-            "🤖 AI đang chờ phân tích";
-
-
-
-            analyzeCamera();
-
-
-
-        }
-
-
-        catch(error){
-
-
-            console.error(
-                "Camera Error:",
-                error
-            );
-
-
-            cameraStatus.innerHTML =
-            "❌ Không mở được camera";
-
-
-        }
-
-
+startBtn.addEventListener("click", async function() {
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: { width: 640, height: 480 },
+            audio: false
+        });
+        video.srcObject = stream;
+        await video.play();
+        cameraRunning = true;
+        
+        cameraStatus.innerHTML = '<i class="fa-solid fa-video"></i> Camera đang hoạt động';
+        cameraStatus.style.color = "var(--success)";
+        aiStatus.innerHTML = '<i class="fa-solid fa-robot"></i> AI đang chờ phân tích';
+        aiStatus.style.color = "var(--warning)";
+        
+        document.getElementById("live-badge").style.display = "block";
+        
+        analyzeCamera();
+    } catch(error) {
+        console.error("Camera Error:", error);
+        cameraStatus.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Không mở được camera';
+        cameraStatus.style.color = "var(--error)";
     }
-
-);
-
-
-
+});
 
 // ===============================
 // TẮT CAMERA
 // ===============================
-
-
-stopBtn.addEventListener(
-    "click",
-    function(){
-
-
-        cameraRunning=false;
-
-
-
-        if(stream){
-
-
-            stream
-            .getTracks()
-            .forEach(
-                track=>track.stop()
-            );
-
-
-        }
-
-
-
-        video.srcObject=null;
-
-
-
-        cameraStatus.innerHTML =
-        "⚪ Camera đã tắt";
-
-document.getElementById(
-    "camera-connect-status"
-).innerHTML =
-"Chưa kết nối";
-        aiStatus.innerHTML =
-        "AI đã dừng";
-
-
+stopBtn.addEventListener("click", function() {
+    cameraRunning = false;
+    if(stream) {
+        stream.getTracks().forEach(track => track.stop());
     }
-
-);
-
-
-
+    video.srcObject = null;
+    
+    cameraStatus.innerHTML = '<i class="fa-solid fa-video-slash"></i> Camera đã tắt';
+    cameraStatus.style.color = "var(--text-muted)";
+    aiStatus.innerHTML = '<i class="fa-solid fa-robot"></i> AI đã dừng';
+    aiStatus.style.color = "var(--text-muted)";
+    
+    document.getElementById("live-badge").style.display = "none";
+});
 
 // ===============================
 // GỬI ẢNH SANG FLASK
 // ===============================
-
-
-async function analyzeCamera(){
-
-
-    if(!cameraRunning)
+async function analyzeCamera() {
+    if(!cameraRunning) return;
+    if(video.videoWidth === 0) {
+        setTimeout(analyzeCamera, 1000);
         return;
-
-
-
-    if(video.videoWidth===0){
-
-
-        setTimeout(
-            analyzeCamera,
-            1000
-        );
-
-
-        return;
-
     }
 
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    let image = canvas.toDataURL("image/jpeg");
 
+    try {
+        let response = await fetch("/analyze", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ image: image })
+        });
+        
+        let data = await response.json();
+        
+        if(data.status === "success") {
+            // Hiển thị kết quả
+            emotionResult.innerHTML = data.emotion;
+            concentrationResult.innerHTML = data.focus + "%";
+            attentionResult.innerHTML = "Đang tập trung";
+            
+            aiStatus.innerHTML = '<i class="fa-solid fa-robot"></i> AI đang phân tích';
+            aiStatus.style.color = "var(--success)";
 
-
-    canvas.width =
-        video.videoWidth;
-
-
-    canvas.height =
-        video.videoHeight;
-
-
-
-    const ctx =
-        canvas.getContext("2d");
-
-
-
-    ctx.drawImage(
-
-        video,
-
-        0,
-
-        0,
-
-        canvas.width,
-
-        canvas.height
-
-    );
-
-
-
-    let image =
-        canvas.toDataURL(
-            "image/jpeg"
-        );
-
-
-
-    try{
-
-
-        let response =
-        await fetch(
-            "/analyze",
-            {
-
-                method:"POST",
-
-
-                headers:{
-
-
-                    "Content-Type":
-                    "application/json"
-
-
-                },
-
-
-                body:JSON.stringify({
-
-                    image:image
-
-                })
-
-
+            // Cập nhật thống kê
+            let emotion = data.emotion;
+            if(emotionCount[emotion] !== undefined) {
+                emotionCount[emotion]++;
+                updateEmotionStatistics();
             }
-
-        );
-
-
-
-        let data =
-        await response.json();
-
-
-
-        console.log(
-            data
-        );
-
-
-if(data.status==="success"){
-
-
-    // =========================
-    // HIỂN THỊ KẾT QUẢ AI
-    // =========================
-
-    emotionResult.innerHTML =
-        data.emotion;
-
-
-    concentrationResult.innerHTML =
-        data.focus + "%";
-
-
-    progressBar.style.width =
-        data.focus + "%";
-
-
-    progressText.innerHTML =
-        data.focus + "%";
-
-
-    attentionResult.innerHTML =
-        "Đang tập trung";
-
-
-    aiStatus.innerHTML =
-        "🤖 AI đang phân tích";
-
-
-
-    // =========================
-    // CẬP NHẬT THỐNG KÊ CẢM XÚC
-    // =========================
-
-    let emotion = data.emotion;
-
-
-    if(emotionCount[emotion] !== undefined){
-
-
-        emotionCount[emotion]++;
-
-
-        updateEmotionStatistics();
-
-
+        }
+    } catch(error) {
+        console.error("AI ERROR:", error);
     }
 
-
+    setTimeout(analyzeCamera, 1500);
 }
 
+function updateEmotionStatistics() {
+    let total = Object.values(emotionCount).reduce((a, b) => a + b, 0);
+    if(total === 0) return;
 
+    let happy = Math.round(emotionCount.Happy / total * 100);
+    let neutral = Math.round(emotionCount.Neutral / total * 100);
+    let sad = Math.round(emotionCount.Sad / total * 100);
+    let angry = Math.round(emotionCount.Angry / total * 100);
+    let fear = Math.round(emotionCount.Fear / total * 100);
+    let surprise = Math.round(emotionCount.Surprise / total * 100);
+    let disgust = Math.round(emotionCount.Disgust / total * 100);
 
+    document.getElementById("happy-percent").innerHTML = happy + "%";
+    document.getElementById("neutral-percent").innerHTML = neutral + "%";
+    document.getElementById("sad-percent").innerHTML = sad + "%";
+    document.getElementById("angry-percent").innerHTML = angry + "%";
+    document.getElementById("fear-percent").innerHTML = fear + "%";
+    document.getElementById("surprise-percent").innerHTML = surprise + "%";
+    document.getElementById("disgust-percent").innerHTML = disgust + "%";
+    
+    document.getElementById("donut-total").innerHTML = total;
+
+    // Cập nhật biểu đồ Donut
+    if(donutChart) {
+        donutChart.data.datasets[0].data = [happy, neutral, sad, surprise, angry, fear, disgust];
+        donutChart.update();
     }
-
-
-    catch(error){
-
-
-        console.error(
-
-            "AI ERROR:",
-
-            error
-
-        );
-
-
-    }
-
-
-
-    setTimeout(
-
-        analyzeCamera,
-
-        1500
-
-    );
-
-
 }
-function updateEmotionStatistics(){
 
-    let total = 0;
-
-
-    for(let key in emotionCount){
-
-        total += emotionCount[key];
-
-    }
-
-
-    if(total === 0)
-        return;
-
-
-
-    document.getElementById("happy-percent").innerHTML =
-        Math.round(emotionCount.Happy / total * 100) + "%";
-
-
-    document.getElementById("neutral-percent").innerHTML =
-        Math.round(emotionCount.Neutral / total * 100) + "%";
-
-
-    document.getElementById("sad-percent").innerHTML =
-        Math.round(emotionCount.Sad / total * 100) + "%";
-
-
-    document.getElementById("angry-percent").innerHTML =
-        Math.round(emotionCount.Angry / total * 100) + "%";
-
-
-    document.getElementById("fear-percent").innerHTML =
-        Math.round(emotionCount.Fear / total * 100) + "%";
-
-
-    document.getElementById("surprise-percent").innerHTML =
-        Math.round(emotionCount.Surprise / total * 100) + "%";
-
-
-    document.getElementById("disgust-percent").innerHTML =
-Math.round(emotionCount.Disgust / total * 100) + "%";
-
-
-// cập nhật biểu đồ
-updateEmotionChart();
-
-
-}
 // =====================================
 // ĐỒNG HỒ THỜI GIAN THỰC
 // =====================================
-
-
-function updateClock(){
-
-
+function updateClock() {
     let now = new Date();
+    let time = now.toLocaleTimeString("vi-VN");
+    let date = now.toLocaleDateString("vi-VN");
 
-
-
-    let time =
-        now.toLocaleTimeString(
-            "vi-VN"
-        );
-
-
-
-    let date =
-        now.toLocaleDateString(
-            "vi-VN"
-        );
-
-
-
-    document.getElementById("clock")
-        .innerHTML =
-        "🕒 " + time;
-
-
-
-    document.getElementById("date")
-        .innerHTML =
-        "📅 " + date;
-
-
+    let topTime = document.getElementById("top-time");
+    let topDate = document.getElementById("top-date");
+    
+    if(topTime) topTime.innerHTML = time;
+    if(topDate) topDate.innerHTML = date;
 }
-
-
-
-setInterval(
-
-    updateClock,
-
-    1000
-
-);
-
-
-
+setInterval(updateClock, 1000);
 updateClock();
+
 // =====================================
-// BIỂU ĐỒ CẢM XÚC REALTIME
+// CHART.JS CẤU HÌNH DARK THEME
 // =====================================
+Chart.defaults.color = '#9CA3AF';
+Chart.defaults.font.family = 'Inter';
 
+let emotionChart; // Line chart
+let donutChart; // Donut chart
 
-let emotionChart;
-
-
-
-function createEmotionChart(){
-
-
-    const ctx =
-    document.getElementById(
-        "emotionChart"
-    );
-
-
-    emotionChart =
-    new Chart(ctx, {
-
-
-        type:"bar",
-
-
-        data:{
-
-
-            labels:[
-
-                "Happy",
-
-                "Neutral",
-
-                "Sad",
-
-                "Angry",
-
-                "Fear",
-
-                "Surprise",
-
-                "Disgust"
-
-            ],
-
-
-
-            datasets:[{
-
-                label:
-                "Tỷ lệ cảm xúc (%)",
-
-
-                data:[
-
-                    0,0,0,0,0,0,0
-
-                ]
-
-
-            }]
-
-
-        },
-
-
-        options:{
-
-
-            responsive:true,
-
-
-            scales:{
-
-
-                y:{
-
-
-                    beginAtZero:true,
-
-
-                    max:100
-
-
-                }
-
-
+function initCharts() {
+    // 1. Biểu đồ đường (Tập trung tổng thể)
+    const lineCtx = document.getElementById("emotionChart");
+    if(lineCtx) {
+        emotionChart = new Chart(lineCtx, {
+            type: "line",
+            data: {
+                labels: ["21:18", "21:20", "21:22", "21:24", "21:26", "21:28", "21:30"],
+                datasets: [{
+                    label: "Mức độ tập trung (%)",
+                    data: [80, 85, 90, 75, 88, 92, 89],
+                    borderColor: '#10B981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: { color: '#1F2937' }
+                    },
+                    x: {
+                        grid: { color: '#1F2937' }
+                    }
+                },
+                plugins: { legend: { display: false } }
             }
+        });
+    }
 
-
-        }
-
-
-    });
-
-
+    // 2. Biểu đồ tròn (Phân bố cảm xúc)
+    const donutCtx = document.getElementById("donutChart");
+    if(donutCtx) {
+        donutChart = new Chart(donutCtx, {
+            type: "doughnut",
+            data: {
+                labels: ["Happy", "Neutral", "Sad", "Surprise", "Angry", "Fear", "Disgust"],
+                datasets: [{
+                    data: [0, 0, 0, 0, 0, 0, 0],
+                    backgroundColor: [
+                        '#10B981', // Happy (Green)
+                        '#3B82F6', // Neutral (Blue)
+                        '#8B5CF6', // Sad (Purple)
+                        '#F59E0B', // Surprise (Yellow)
+                        '#EF4444', // Angry (Red)
+                        '#06B6D4', // Fear (Cyan)
+                        '#6B7280'  // Disgust (Gray)
+                    ],
+                    borderWidth: 0,
+                    cutout: '75%'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false } // Đã có bảng thay thế
+                }
+            }
+        });
+    }
 }
 
-
-
-createEmotionChart();
-
-// ===============================
-// TABS LOGIC
-// ===============================
-
-const tabButtons = document.querySelectorAll('.tab-btn');
-const tabPanes = document.querySelectorAll('.tab-pane');
-
-tabButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        // Remove active class from all buttons and panes
-        tabButtons.forEach(b => b.classList.remove('active'));
-        tabPanes.forEach(p => p.classList.remove('active'));
-
-        // Add active class to clicked button
-        btn.classList.add('active');
-
-        // Show corresponding pane
-        const targetId = btn.getAttribute('data-target');
-        const targetPane = document.getElementById(targetId);
-        if (targetPane) {
-            targetPane.classList.add('active');
-        }
-    });
-});
+// Khởi tạo biểu đồ khi trang load
+document.addEventListener('DOMContentLoaded', initCharts);

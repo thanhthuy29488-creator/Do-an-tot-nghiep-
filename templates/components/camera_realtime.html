@@ -1,47 +1,23 @@
-<!-- ================= CAMERA ================= -->
+<div id="video-container">
+    <div class="camera-overlay" id="live-badge" style="display: none;"><i class="fa-solid fa-circle"></i> LIVE</div>
+    <div class="camera-overlay" id="fps-badge" style="left: auto; right: 10px; background: rgba(0,0,0,0.5); color: #fff;">FPS: --</div>
+    
+    <video id="video" autoplay playsinline></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+</div>
 
-    <section class="card" style="text-align: center;">
+<div class="camera-controls" style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center;">
+    <div class="status" style="font-size: 12px; color: var(--text-muted);">
+        <p id="camera-status"><i class="fa-solid fa-video-slash"></i> Camera chưa bật</p>
+        <p id="ai-status"><i class="fa-solid fa-robot"></i> AI chưa phân tích</p>
+    </div>
 
-        <h2>📷 Đánh giá thời gian thực (Real-time Monitoring)</h2>
-
-        <video id="video"
-               autoplay
-               playsinline
-               style="max-width: 100%; border-radius: 12px; margin: 0 auto; display: block;">
-        </video>
-        <canvas id="canvas" style="display:none; margin: 0 auto;"></canvas>
-
-
-        <div class="status" style="margin-top: 15px;">
-
-            <p id="camera-status">
-
-                ⚪ Camera chưa bật
-
-            </p>
-
-            <p id="ai-status">
-
-                🤖 AI chưa phân tích
-
-            </p>
-
-        </div>
-
-        <div class="button-group" style="justify-content: center;">
-
-            <button id="startBtn">
-
-                ▶ Bắt đầu Camera
-
-            </button>
-
-            <button id="stopBtn">
-
-                ⛔ Dừng Camera
-
-            </button>
-
-        </div>
-
-    </section>
+    <div class="button-group" style="display: flex; gap: 10px;">
+        <button id="startBtn" class="btn-export" style="background: var(--accent-blue);">
+            <i class="fa-solid fa-play"></i> Bắt đầu
+        </button>
+        <button id="stopBtn" class="btn-export" style="background: var(--error);">
+            <i class="fa-solid fa-stop"></i> Dừng
+        </button>
+    </div>
+</div>

@@ -1,73 +1,32 @@
-<!-- ================= KẾT QUẢ AI ================= -->
-
-    <section class="card" style="text-align: center;">
-
-        <h2>🧠 Kết quả phân tích AI</h2>
-
-        <div class="result-grid">
-
-            <div class="result-item">
-
-                <h3>Cảm xúc</h3>
-
-                <div id="emotion-result"
-                     class="result-value">
-
-                    Neutral
-
-                </div>
-
-            </div>
-
-            <div class="result-item">
-
-                <h3>Mức tập trung</h3>
-
-                <div id="concentration-result"
-                     class="result-value">
-
-                    0%
-
-                </div>
-
-            </div>
-
-            <div class="result-item">
-
-                <h3>Đánh giá</h3>
-
-                <div id="attention-result"
-                     class="result-value">
-
-                    Chờ phân tích
-
-                </div>
-
-            </div>
-
+<div class="ai-cards-row">
+    <!-- Cảm xúc -->
+    <div class="ai-card">
+        <div class="ai-card-title">Cảm xúc hiện tại</div>
+        <div style="font-size: 40px; color: var(--warning); margin-bottom: 10px;">
+            <i class="fa-regular fa-face-smile" id="emotion-icon"></i>
         </div>
+        <div id="emotion-result" class="ai-card-value" style="color: var(--success);">Happy</div>
+        <div class="ai-card-sub" style="color: var(--success);">Độ tin cậy: 92.45%</div>
+    </div>
 
-        <!-- Thanh tiến trình -->
-
-        <div class="progress-box">
-
-            <h3>📈 Chỉ số tập trung</h3>
-
-            <div class="progress">
-
-                <div id="progress-bar"
-                     class="progress-bar">
-                </div>
-
-            </div>
-
-            <div id="progress-text"
-                 class="progress-text">
-
-                0%
-
-            </div>
-
+    <!-- Tập trung -->
+    <div class="ai-card">
+        <div class="ai-card-title">Mức độ tập trung</div>
+        <div style="width: 70px; height: 70px; border-radius: 50%; border: 4px solid var(--success); display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+            <div id="concentration-result" class="ai-card-value">0%</div>
         </div>
+        <div id="progress-text" class="ai-card-sub" style="color: var(--success);">Chờ phân tích</div>
+        <!-- Ẩn progress bar cũ đi vì thiết kế mới dùng vòng tròn -->
+        <div id="progress-bar" style="display:none;"></div>
+    </div>
 
-    </section>
+    <!-- Đánh giá -->
+    <div class="ai-card">
+        <div class="ai-card-title">Đánh giá</div>
+        <div style="font-size: 40px; color: var(--warning); margin-bottom: 10px;">
+            <i class="fa-solid fa-trophy"></i>
+        </div>
+        <div id="attention-result" class="ai-card-value" style="color: var(--warning); font-size: 18px;">Xuất sắc</div>
+        <div class="ai-card-sub" style="color: var(--text-muted); font-size: 10px; line-height: 1.4;">Học sinh đang duy trì<br>sự tập trung rất tốt!</div>
+    </div>
+</div>
