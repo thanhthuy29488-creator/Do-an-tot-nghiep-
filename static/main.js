@@ -159,8 +159,11 @@ function updateEmotionStatistics() {
 }
 
 // =====================================
-// ĐỒNG HỒ THỜI GIAN THỰC
+// ĐỒNG HỒ THỜI GIAN THỰC & ĐẾM GIỜ PHIÊN HỌC
 // =====================================
+let sessionSeconds = 0;
+let sessionTimer = null;
+
 function updateClock() {
     let now = new Date();
     let time = now.toLocaleTimeString("vi-VN");
@@ -174,6 +177,23 @@ function updateClock() {
 }
 setInterval(updateClock, 1000);
 updateClock();
+
+function updateSessionTimer() {
+    sessionSeconds++;
+    let h = Math.floor(sessionSeconds / 3600);
+    let m = Math.floor((sessionSeconds % 3600) / 60);
+    let s = sessionSeconds % 60;
+    
+    let formattedTime = 
+        String(h).padStart(2, '0') + ":" + 
+        String(m).padStart(2, '0') + ":" + 
+        String(s).padStart(2, '0');
+        
+    let sessionTimeEl = document.getElementById("session-time");
+    if(sessionTimeEl) sessionTimeEl.innerHTML = formattedTime;
+}
+// Bắt đầu đếm thời gian khi mở trang
+sessionTimer = setInterval(updateSessionTimer, 1000);
 
 // =====================================
 // CHART.JS CẤU HÌNH DARK THEME
