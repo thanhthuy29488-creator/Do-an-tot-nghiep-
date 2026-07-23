@@ -53,6 +53,12 @@ startBtn.addEventListener("click", async function() {
         aiStatus.innerHTML = '<i class="fa-solid fa-robot"></i> AI đang chờ phân tích';
         aiStatus.style.color = "var(--warning)";
         
+        let connectStatus = document.getElementById("camera-connect-status");
+        if(connectStatus) {
+            connectStatus.innerHTML = "Online";
+            connectStatus.style.color = "var(--success)";
+        }
+        
         document.getElementById("live-badge").style.display = "block";
         
         analyzeCamera();
@@ -77,6 +83,12 @@ stopBtn.addEventListener("click", function() {
     cameraStatus.style.color = "var(--text-muted)";
     aiStatus.innerHTML = '<i class="fa-solid fa-robot"></i> AI đã dừng';
     aiStatus.style.color = "var(--text-muted)";
+    
+    let connectStatus = document.getElementById("camera-connect-status");
+    if(connectStatus) {
+        connectStatus.innerHTML = "Chưa kết nối";
+        connectStatus.style.color = "var(--text-muted)";
+    }
     
     document.getElementById("live-badge").style.display = "none";
 });
@@ -107,10 +119,54 @@ async function analyzeCamera() {
         let data = await response.json();
         
         if(data.status === "success") {
-            // Hiển thị kết quả
+            // =========================
+            // HIỂN THỊ CẢM XÚC
+            // =========================
             emotionResult.innerHTML = data.emotion;
+            let iconEl = document.getElementById("emotion-icon");
+            
+            // Đổi icon và màu theo cảm xúc
+            let color = "var(--success)";
+            if(data.emotion === "Happy") { iconEl.className = "fa-regular fa-face-smile"; color = "#10B981"; }
+            else if(data.emotion === "Neutral") { iconEl.className = "fa-regular fa-face-meh"; color = "#3B82F6"; }
+            else if(data.emotion === "Sad") { iconEl.className = "fa-regular fa-face-frown"; color = "#8B5CF6"; }
+            else if(data.emotion === "Angry") { iconEl.className = "fa-regular fa-face-angry"; color = "#EF4444"; }
+            else if(data.emotion === "Surprise") { iconEl.className = "fa-regular fa-face-surprise"; color = "#F59E0B"; }
+            else if(data.emotion === "Fear") { iconEl.className = "fa-regular fa-face-flushed"; color = "#06B6D4"; }
+            else { iconEl.className = "fa-regular fa-face-grimace"; color = "#6B7280"; }
+            
+            emotionResult.style.color = color;
+            iconEl.style.color = color;
+
+            // =========================
+            // HIỂN THỊ TẬP TRUNG & ĐÁNH GIÁ
+            // =========================
             concentrationResult.innerHTML = data.focus + "%";
-            attentionResult.innerHTML = "Đang tập trung";
+            document.getElementById("progress-text").innerHTML = "Đang phân tích";
+            
+            let focusColor = "var(--success)";
+            let evalText = "Xuất sắc";
+            let evalSub = "Học sinh đang duy trì<br>sự tập trung rất tốt!";
+            
+            if(data.focus >= 80) {
+                focusColor = "var(--success)";
+                evalText = "Xuất sắc";
+                evalSub = "Tập trung rất tốt!";
+            } else if(data.focus >= 50) {
+                focusColor = "var(--warning)";
+                evalText = "Trung bình";
+                evalSub = "Cần chú ý hơn một chút.";
+            } else {
+                focusColor = "var(--error)";
+                evalText = "Kém";
+                evalSub = "Có dấu hiệu mất tập trung.";
+            }
+            
+            concentrationResult.parentElement.style.borderColor = focusColor;
+            concentrationResult.style.color = focusColor;
+            attentionResult.innerHTML = evalText;
+            attentionResult.style.color = focusColor;
+            attentionResult.nextElementSibling.innerHTML = evalSub;
             
             aiStatus.innerHTML = '<i class="fa-solid fa-robot"></i> AI đang phân tích';
             aiStatus.style.color = "var(--success)";
