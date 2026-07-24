@@ -11,10 +11,27 @@
 
     </p>
 
+    <div style="margin-bottom: 15px;">
+        <label for="video-subject" style="display: block; margin-bottom: 5px; color: var(--text-light);">📚 Chọn môn học:</label>
+        <input type="text" id="video-subject" list="subject-list" placeholder="Ví dụ: Toán học, Ngữ văn..." 
+               style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-dark); color: var(--text-light);">
+        <datalist id="subject-list">
+            <option value="Toán học">
+            <option value="Ngữ văn">
+            <option value="Tiếng Anh">
+            <option value="Vật lý">
+            <option value="Hóa học">
+            <option value="Sinh học">
+            <option value="Lịch sử">
+            <option value="Địa lý">
+        </datalist>
+    </div>
+
     <input
         type="file"
         id="video-upload"
-        accept="video/*">
+        accept="video/*"
+        style="margin-bottom: 15px; display: block;">
 
     <div class="button-group">
 

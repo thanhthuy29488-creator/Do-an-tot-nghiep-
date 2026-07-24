@@ -220,37 +220,16 @@ def init_database():
         """
 
         CREATE TABLE IF NOT EXISTS analysis_history
-
         (
-
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-
             created_time TEXT,
-
-
-            emotion TEXT,
-
-
-            concentration REAL,
-
-
-            attention TEXT,
-
-
             total_frames INTEGER,
-
-
             total_faces INTEGER,
-
-
-            emotion_data TEXT
-
-
+            focus_score REAL,
+            emotion_data TEXT,
+            subject TEXT
         )
-
         """
-
     )
 
 
@@ -643,21 +622,13 @@ def upload_video():
 
 
         if "video" not in request.files:
-
-
             return jsonify({
-
-                "status":
-                    "error",
-
-                "message":
-                    "Chưa chọn video"
-
+                "status": "error",
+                "message": "Chưa chọn video"
             })
 
-
-
         video = request.files["video"]
+        subject = request.form.get("subject", "Khác")
 
 
 
@@ -672,15 +643,9 @@ def upload_video():
 
 
 
-        video.save(
-            filepath
-        )
+        video.save(filepath)
 
-
-
-        result = analyze_video(
-            filepath
-        )
+        result = analyze_video(filepath, subject)
 
 
 
@@ -723,12 +688,9 @@ def upload_video():
 # =====================================================
 
 
-def analyze_video(video_path):
+def analyze_video(video_path, subject="Khác"):
 
-
-    cap = cv2.VideoCapture(
-        video_path
-    )
+    cap = cv2.VideoCapture(video_path)
 
 
     emotion_count = {
@@ -951,9 +913,8 @@ def analyze_video(video_path):
 
 
 
-    save_report(
-        report
-    )
+    report["subject"] = subject
+    save_report(report)
 
 
 
@@ -970,50 +931,32 @@ def analyze_video(video_path):
 
 
 def save_report(report):
-
-
     try:
-
-
-        conn = sqlite3.connect(
-            DATABASE
-        )
-
-
+        conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
-
-
+        created_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         cursor.execute(
             """
-
             INSERT INTO analysis_history
-
             (
+                created_time,
                 total_frames,
                 total_faces,
                 focus_score,
-                emotion_data
+                emotion_data,
+                subject
             )
-
-            VALUES (?,?,?,?)
-
+            VALUES (?,?,?,?,?,?)
             """,
-
             (
-
+                created_time,
                 report["total_frames"],
-
                 report["total_faces"],
-
                 report["focus_score"],
-
-                json.dumps(
-                    report["emotion"]
-                )
-
+                json.dumps(report["emotion"]),
+                report.get("subject", "Khác")
             )
-
         )
 
 
@@ -1164,7 +1107,87 @@ def remove_video(path):
 
 
         pass
-    # =====================================================
+# =====================================================
+# API BÁO CÁO THÁNG THEO MÔN HỌC
+# =====================================================
+@app.route("/api/report/monthly", methods=["GET"])
+def report_monthly():
+    month = request.args.get("month") # format YYYY-MM
+    if not month:
+        return jsonify({"status": "error", "message": "Missing month parameter"})
+    
+    try:
+        conn = sqlite3.connect(DATABASE)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        
+        # Query aggregate statistics by subject for the given month
+        query = """
+            SELECT 
+                subject, 
+                COUNT(*) as session_count,
+                SUM(total_faces) as total_faces,
+                AVG(focus_score) as avg_focus
+            FROM analysis_history
+            WHERE created_time LIKE ?
+            GROUP BY subject
+            ORDER BY avg_focus DESC
+        """
+        cursor.execute(query, (f"{month}%",))
+        data = cursor.fetchall()
+        
+        # We might also want to figure out the most prominent emotion.
+        # But since emotion_data is JSON, we can't easily aggregate it in basic sqlite.
+        # So we just fetch all records for the month to aggregate emotions in python.
+        
+        cursor.execute("SELECT subject, emotion_data FROM analysis_history WHERE created_time LIKE ?", (f"{month}%",))
+        all_records = cursor.fetchall()
+        
+        conn.close()
+        
+        # Aggregate emotions per subject
+        emotions_by_subject = {}
+        for row in all_records:
+            sub = row["subject"]
+            if not sub:
+                sub = "Khác"
+            if sub not in emotions_by_subject:
+                emotions_by_subject[sub] = {"Happy": 0, "Neutral": 0, "Sad": 0, "Angry": 0, "Fear": 0, "Surprise": 0, "Disgust": 0}
+            
+            try:
+                emotions = json.loads(row["emotion_data"])
+                for k, v in emotions.items():
+                    if k in emotions_by_subject[sub]:
+                        emotions_by_subject[sub][k] += v
+            except:
+                pass
+                
+        # Find dominant emotion
+        dominant_emotion_by_subject = {}
+        for sub, emos in emotions_by_subject.items():
+            if emos:
+                dominant = max(emos, key=emos.get)
+                dominant_emotion_by_subject[sub] = dominant
+            else:
+                dominant_emotion_by_subject[sub] = "Không rõ"
+        
+        result = []
+        for row in data:
+            sub = row["subject"] if row["subject"] else "Khác"
+            result.append({
+                "subject": sub,
+                "session_count": row["session_count"],
+                "total_faces": row["total_faces"],
+                "avg_focus": round(row["avg_focus"], 2) if row["avg_focus"] else 0,
+                "dominant_emotion": dominant_emotion_by_subject.get(sub, "Không rõ")
+            })
+            
+        return jsonify({"status": "success", "data": result})
+        
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})
+
+# =====================================================
 # CHẠY SERVER FLASK
 # =====================================================
 

@@ -1,0 +1,29 @@
+<section class="card" style="width: 100%;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2><i class="fa-solid fa-file-contract"></i> Khảo sát mức độ tập trung theo môn học</h2>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <label for="report-month" style="color: var(--text-light); font-weight: 500;">Chọn tháng:</label>
+            <input type="month" id="report-month" style="padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-dark); color: var(--text-light);">
+            <button id="btn-load-report" class="btn-primary" style="padding: 8px 16px; border: none; border-radius: 6px; background: var(--primary); color: #fff; cursor: pointer;">Xem báo cáo</button>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="history-table" style="width: 100%; text-align: left; border-collapse: collapse;">
+            <thead>
+                <tr style="border-bottom: 1px solid var(--border-color);">
+                    <th style="padding: 12px; color: var(--text-muted);">Môn học</th>
+                    <th style="padding: 12px; color: var(--text-muted);">Số phiên PT</th>
+                    <th style="padding: 12px; color: var(--text-muted);">Số khuôn mặt PT</th>
+                    <th style="padding: 12px; color: var(--text-muted);">Tập trung TB</th>
+                    <th style="padding: 12px; color: var(--text-muted);">Cảm xúc nổi bật</th>
+                </tr>
+            </thead>
+            <tbody id="report-table-body">
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 20px; color: var(--text-muted);">Vui lòng chọn tháng và nhấn "Xem báo cáo"</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>

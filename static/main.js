@@ -370,4 +370,114 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // ===============================
+    // UPLOAD VIDEO OFFLINE
+    // ===============================
+    const uploadBtn = document.getElementById('uploadBtn');
+    if (uploadBtn) {
+        uploadBtn.addEventListener('click', async function() {
+            const fileInput = document.getElementById('video-upload');
+            const subjectInput = document.getElementById('video-subject');
+            const statusDiv = document.getElementById('upload-status');
+            const totalDetect = document.getElementById('total-detect');
+
+            if (!fileInput.files || fileInput.files.length === 0) {
+                statusDiv.innerHTML = '<span style="color: var(--error);">Vui lòng chọn file video.</span>';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('video', fileInput.files[0]);
+            
+            let subject = "Khác";
+            if (subjectInput && subjectInput.value.trim() !== "") {
+                subject = subjectInput.value.trim();
+            }
+            formData.append('subject', subject);
+
+            statusDiv.innerHTML = '<span style="color: var(--warning);"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải lên và phân tích...</span>';
+            uploadBtn.disabled = true;
+
+            try {
+                const response = await fetch('/upload_video', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    statusDiv.innerHTML = `<span style="color: var(--success);"><i class="fa-solid fa-check"></i> Phân tích xong video ${data.filename}!</span>`;
+                    
+                    if (totalDetect) {
+                        let current = parseInt(totalDetect.innerText) || 0;
+                        totalDetect.innerText = current + data.report.total_faces;
+                    }
+                    
+                    // Hiện alert nhỏ thông báo kết quả
+                    alert(`Phân tích thành công!\nMôn học: ${subject}\nTổng số khung hình: ${data.report.total_frames}\nĐiểm tập trung trung bình: ${data.report.focus_score}%`);
+                } else {
+                    statusDiv.innerHTML = `<span style="color: var(--error);"><i class="fa-solid fa-triangle-exclamation"></i> Lỗi: ${data.message}</span>`;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<span style="color: var(--error);"><i class="fa-solid fa-triangle-exclamation"></i> Đã xảy ra lỗi khi phân tích.</span>`;
+            }
+            
+            uploadBtn.disabled = false;
+        });
+    }
+
+    // ===============================
+    // XEM BÁO CÁO THÁNG
+    // ===============================
+    const btnLoadReport = document.getElementById('btn-load-report');
+    if (btnLoadReport) {
+        btnLoadReport.addEventListener('click', async function() {
+            const monthInput = document.getElementById('report-month');
+            const tbody = document.getElementById('report-table-body');
+            
+            if (!monthInput.value) {
+                alert("Vui lòng chọn tháng để xem báo cáo!");
+                return;
+            }
+            
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;"><i class="fa-solid fa-spinner fa-spin"></i> Đang tải dữ liệu...</td></tr>';
+            
+            try {
+                const response = await fetch(`/api/report/monthly?month=${monthInput.value}`);
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    if (data.data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px; color: var(--text-muted);">Không có dữ liệu trong tháng này.</td></tr>';
+                        return;
+                    }
+                    
+                    let html = '';
+                    data.data.forEach(item => {
+                        let focusColor = 'var(--success)';
+                        if (item.avg_focus < 50) focusColor = 'var(--error)';
+                        else if (item.avg_focus < 80) focusColor = 'var(--warning)';
+                        
+                        html += `
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 12px; color: var(--text-light);"><strong>${item.subject}</strong></td>
+                                <td style="padding: 12px; color: var(--text-light);">${item.session_count}</td>
+                                <td style="padding: 12px; color: var(--text-light);">${item.total_faces}</td>
+                                <td style="padding: 12px; color: ${focusColor}; font-weight: bold;">${item.avg_focus}%</td>
+                                <td style="padding: 12px; color: var(--text-light);">${item.dominant_emotion}</td>
+                            </tr>
+                        `;
+                    });
+                    tbody.innerHTML = html;
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 20px; color: var(--error);">Lỗi: ${data.message}</td></tr>`;
+                }
+            } catch (error) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px; color: var(--error);">Đã xảy ra lỗi khi kết nối với máy chủ.</td></tr>';
+            }
+        });
+    }
+
 });
